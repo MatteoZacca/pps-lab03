@@ -33,7 +33,10 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10, 20, 30], 0 => [10, 20, 30]
      * E.g., [], 2 => []
      */
-    def skip[A](s: Sequence[A])(n: Int): Sequence[A] = ???
+    def skip[A](s: Sequence[A])(n: Int): Sequence[A] = s match
+      case _ if n <= 0 => s // se n è negativo o nullo, restitisce la sequenza originale
+      case Cons(_, tail) => skip(tail)(n - 1) // skippa il primo elemento e decrementa n
+      case Nil() => Nil() // se la sequenza è vuota, restituisce una sequenza vuota
 
     /*
      * Zip two sequences
@@ -41,7 +44,9 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10], [] => []
      * E.g., [], [] => []
      */
-    def zip[A, B](first: Sequence[A], second: Sequence[B]): Sequence[(A, B)] = ???
+    def zip[A, B](first: Sequence[A], second: Sequence[B]): Sequence[(A, B)] = (first, second) match
+      case (Cons(h1, t1), Cons(h2, t2)) => Cons((h1, h2), zip(t1, t2)) // Combina i primi elementi e procede ricorsivamente
+      case _ => Nil() // se una delle due sequenze è vuota, viene restituita una sequenza vuota
 
     /*
      * Concatenate two sequences
@@ -116,8 +121,14 @@ end Sequences
 @main def trySequences =
   import Sequences.*
   val sequence = Sequence.Cons(10, Sequence.Cons(20, Sequence.Cons(30, Sequence.Nil())))
+
   println(Sequence.sum(sequence)) // 30
 
   import Sequence.*
 
+  val l2: Sequence[String] = Cons("10", Cons("20", Nil()))
+
   println(sum(map(filter(sequence)(_ >= 20))(_ + 1))) // 21+31 = 52
+
+
+

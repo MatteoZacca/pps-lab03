@@ -29,9 +29,12 @@ class SequenceTest:
     assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), skip(sequence)(0))
     assertEquals(Nil(), skip(Nil())(2))
 
+
   @Test def testZip() =
     val l2: Sequence[String] = Cons("10", Cons("20", Cons("30", Nil())))
+    val l3: Sequence[String] = Cons("10", Cons("20", Nil()))
     assertEquals(Cons((10, "10"), Cons((20, "20"), Cons((30, "30"), Nil()))), zip(sequence, l2))
+    assertEquals(Cons((10,10),Cons((20,20),Nil())), zip(sequence, l3))
     assertEquals(Nil(), zip(sequence, Nil()))
     assertEquals(Nil(), zip(Nil(), l2))
     assertEquals(Nil(), zip(Nil(), Nil()))
