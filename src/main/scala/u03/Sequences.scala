@@ -83,7 +83,21 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [30, 20, 10] => 10
      * E.g., [10, 1, 30] => 1
      */
-    def min(s: Sequence[Int]): Optional[Int] = ???
+    def min(s: Sequence[Int]): Optional[Int] = s match
+      case Nil() => Empty()
+      case Cons(h, t) =>
+        val tailMin = min(t) // chiamata ricorsiva sulla sequenza, fino ad arrivare a Nil()
+        tailMin match
+          case Empty() => Just(h)
+          case Just(tailValue) => Just(if h < tailValue then h else tailValue)
+
+    // Soluzione alternativa 2
+    /* def min(s: Sequence[Int]): Optional[Int] =
+          def _min(s: Sequence[Int])(minValue: Optional[Int]): Optional[Int] = s match
+            case Cons(h, t) if h < orElse(minValue, Int.MaxValue) => _min(t)(Just(h))
+            case Cons(_, t) => _min(t)(minValue)
+            case _ => minValue
+          _min(s)(Empty()) */
 
     /*
      * Get the elements at even indices

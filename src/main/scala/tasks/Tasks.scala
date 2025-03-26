@@ -26,6 +26,18 @@ object Tasks:
   def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] = s match
     case Cons(head, tail) => concat(mapper(head), flatMap(tail)(mapper))
     case Nil() => Nil()
+    
+  // Optional methods
+  import u03.Optionals.*
+  import Optional.*
+  
+  def min(s: Sequence[Int]): Optional[Int] = s match
+    case Nil() => Empty()
+    case Cons(h, t) =>
+      val tailMin = min(t) // chiamata ricorsiva sulla sequenza, fino ad arrivare a Nil()
+      tailMin match
+        case Empty() => Just(h)
+        case Just(tailValue) => Just(if h < tailValue then h else tailValue)
 
   //--------------------- TASK_2 (more on lists) ---------------------
   import u02.Modules.*
