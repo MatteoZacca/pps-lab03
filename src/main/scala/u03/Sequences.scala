@@ -45,7 +45,7 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [], [] => []
      */
     def zip[A, B](first: Sequence[A], second: Sequence[B]): Sequence[(A, B)] = (first, second) match
-      case (Cons(h1, t1), Cons(h2, t2)) => Cons((h1, h2), zip(t1, t2)) // Combina i primi elementi e procede ricorsivamente
+      case (Cons(head1, tail1), Cons(head2, tail2)) => Cons((head1, head2), zip(tail1, tail2)) // Combina i primi elementi e procede ricorsivamente
       case _ => Nil() // se una delle due sequenze è vuota, viene restituita una sequenza vuota
 
     /*
@@ -55,7 +55,7 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [], [] => []
      */
     def concat[A](s1: Sequence[A], s2: Sequence[A]): Sequence[A] = s1 match
-      case Cons(h, t) => Cons(h, concat(t, s2)) // Si aggiunge il primo elemento della prima sequenza e si procede con la coda
+      case Cons(head1, tail1) => Cons(head1, concat(tail1, s2)) // Si aggiunge il primo elemento della prima sequenza e si procede con la coda
       case Nil() => s2
 
     /*
@@ -65,7 +65,7 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [] => []
      */
     def reverse[A](s: Sequence[A]): Sequence[A] = s match
-      case Cons(h, t) => concat(reverse(t), Cons(h, Nil()))
+      case Cons(head, tail) => concat(reverse(tail), Cons(head, Nil()))
       case Nil() => Nil()
 
     /*
@@ -75,7 +75,7 @@ object Sequences: // Essentially, generic linkedlists
      * E.g., [10, 20, 30], calling with mapper(v => Nil()) returns []
      */
     def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] = s match
-      case Cons(h, t) => concat(mapper(h), flatMap(t)(mapper))
+      case Cons(head, tail) => concat(mapper(head), flatMap(tail)(mapper))
       case Nil() => Nil()
 
     /*
